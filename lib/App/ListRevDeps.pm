@@ -122,7 +122,7 @@ sub list_rev_deps {
 
         for my $d (sort @$depdists) {
             if ($exclude_re && $d =~ $exclude_re) {
-                $log->infof("Excluded dist %s", $_) unless $excluded{$d}++;
+                $log->infof("Excluded dist %s", $d) unless $excluded{$d}++;
                 next;
             }
             my $res = {
@@ -149,12 +149,16 @@ sub list_rev_deps {
 
     my @res;
     for (ref($mod) eq 'ARRAY' ? @$mod : $mod) {
-        my $modinfo = $chi->compute(
-            "$cp-mod-$_", $ce, sub {
-                $log->infof("Querying MetaCPAN for module %s ...", $_);
-                $mcpan->module($_);
-            });
-        my $dist = $modinfo->{distribution};
+        my $dist;
+        # if it already looks like a dist, skip an API call
+        if ($dist =~ /::/) {
+            my $modinfo = $chi->compute(
+                "$cp-mod-$_", $ce, sub {
+                    $log->infof("Querying MetaCPAN for module %s ...", $_);
+                    $mcpan->module($_);
+                });
+            $dist = $modinfo->{distribution};
+        }
         push @res, $do_list->($dist);
     }
     my $res = $raw ? \@res : join("", @res);
