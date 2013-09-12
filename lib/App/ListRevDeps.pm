@@ -151,7 +151,9 @@ sub list_rev_deps {
     for (ref($mod) eq 'ARRAY' ? @$mod : $mod) {
         my $dist;
         # if it already looks like a dist, skip an API call
-        if ($dist =~ /::/) {
+        if (/-/) {
+            $dist = $_;
+        } else {
             my $modinfo = $chi->compute(
                 "$cp-mod-$_", $ce, sub {
                     $log->infof("Querying MetaCPAN for module %s ...", $_);
