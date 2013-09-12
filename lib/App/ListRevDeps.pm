@@ -114,16 +114,17 @@ sub list_rev_deps {
                 my @dists;
                 for (@urls) {
                     s!^/release/!!;
-                    if ($exclude_re && $_ =~ $exclude_re) {
-                        $log->infof("Excluded dist %s", $_);
-                        next;
-                    }
                     push @dists, $_;
                 }
                 \@dists;
             });
 
+        my %excluded; # to avoid showing skipped message multiple times
         for my $d (@$depdists) {
+            if ($exclude_re && $d =~ $exclude_re) {
+                $log->infof("Excluded dist %s", $_) unless $excluded{$d}++;
+                next;
+            }
             my $res = {
                 dist => $d,
             };
