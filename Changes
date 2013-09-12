@@ -1,5 +1,12 @@
 Revision history for App-ListRevDeps
 
+0.03    2013-09-13 (SHARYANTO)
+
+        - Accept dist names too.
+
+        - Bug fixes.
+
+
 0.02    2013-09-13 (SHARYANTO)
 
         - Add option --exclude-re.
