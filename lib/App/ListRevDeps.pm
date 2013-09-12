@@ -34,11 +34,11 @@ _
             summary => 'Specify how many levels up to check (-1 means unlimited)',
             #cmdline_aliases => { l => {} },
         },
-        recursive => {
-            schema  => ['bool'],
-            summary => 'Equivalent to setting level=-1',
-            cmdline_aliases => { r => {} },
-        },
+        #recursive => {
+        #    schema  => ['bool'],
+        #    summary => 'Equivalent to setting level=-1',
+        #    cmdline_aliases => { r => {} },
+        #},
         exclude_re => {
             schema  => ['str*'], # XXX re
             summary => 'Specify dist pattern to exclude',
@@ -69,7 +69,7 @@ sub list_rev_deps {
     # XXX schema
     my $mod = $args{module} or return [400, "Please specify module"];
     my $maxlevel = $args{level} // 1;
-    $maxlevel = -1 if $args{recursive};
+    #$maxlevel = -1 if $args{recursive};
     #my $do_cache = $args{cache} // 1;
     my $raw = $args{raw};
     my $exclude_re = $args{exclude_re};
