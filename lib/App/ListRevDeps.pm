@@ -88,6 +88,7 @@ sub list_rev_deps {
     my @errs;
     my %mdist; # mentioned dist, for checking circularity
     my %mmod;  # mentioned mod
+    my %excluded; # to avoid showing skipped message multiple times
 
     my $do_list;
     $do_list = sub {
@@ -119,8 +120,7 @@ sub list_rev_deps {
                 \@dists;
             });
 
-        my %excluded; # to avoid showing skipped message multiple times
-        for my $d (@$depdists) {
+        for my $d (sort @$depdists) {
             if ($exclude_re && $d =~ $exclude_re) {
                 $log->infof("Excluded dist %s", $_) unless $excluded{$d}++;
                 next;
