@@ -14,13 +14,7 @@ our @EXPORT_OK = qw(list_prereqs);
 
 $SPEC{list_rev_deps} = {
     v => 1.1,
-    summary => 'List prerequisites of a Perl module',
-    description => <<'_',
-
-Currently skips prerequisites which are modules already in core (for installed
-perl version).
-
-_
+    summary => 'List reverse dependencies of a Perl module',
     args => {
         module => {
             schema  => ['array*'], # XXX of str*
