@@ -1,5 +1,10 @@
 Revision history for App-ListRevDeps
 
+0.04    2013-09-13 (SHARYANTO)
+
+        - (Temporarily?) remove --recursive.
+
+
 0.03    2013-09-13 (SHARYANTO)
 
         - Accept dist names too.
