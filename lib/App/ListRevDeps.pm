@@ -39,6 +39,10 @@ _
             summary => 'Equivalent to setting level=-1',
             cmdline_aliases => { r => {} },
         },
+        exclude_re => {
+            schema  => ['str*'], # XXX re
+            summary => 'Specify dist pattern to exclude',
+        },
         #cache => {
         #    schema  => [bool => {default=>1}],
         #    summary => 'Whether to cache API results for some time, '.
@@ -68,6 +72,10 @@ sub list_rev_deps {
     $maxlevel = -1 if $args{recursive};
     #my $do_cache = $args{cache} // 1;
     my $raw = $args{raw};
+    my $exclude_re = $args{exclude_re};
+    if ($exclude_re) {
+        $exclude_re = qr/$exclude_re/;
+    }
 
     # '$cache' is ambiguous between args{cache} and CHI object
     my $chi = CHI->new(driver => "File");
@@ -106,6 +114,10 @@ sub list_rev_deps {
                 my @dists;
                 for (@urls) {
                     s!^/release/!!;
+                    if ($exclude_re && $_ =~ $exclude_re) {
+                        $log->infof("Excluded dist %s", $_);
+                        next;
+                    }
                     push @dists, $_;
                 }
                 \@dists;
