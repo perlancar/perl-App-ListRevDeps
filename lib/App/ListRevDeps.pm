@@ -37,11 +37,11 @@ $SPEC{list_rev_deps} = {
             schema  => ['str*'], # XXX re
             summary => 'Specify dist pattern to exclude',
         },
-        #cache => {
-        #    schema  => [bool => {default=>1}],
-        #    summary => 'Whether to cache API results for some time, '.
-        #        'for performance',
-        #},
+        cache => {
+            schema  => [bool => {default=>1}],
+            summary => 'Whether to cache API results for some time, '.
+                'for performance',
+        },
         raw => {
             schema  => [bool => {default=>0}],
             summary => 'Return raw result',
@@ -64,7 +64,7 @@ sub list_rev_deps {
     my $mod = $args{module} or return [400, "Please specify module"];
     my $maxlevel = $args{level} // 1;
     #$maxlevel = -1 if $args{recursive};
-    #my $do_cache = $args{cache} // 1;
+    my $do_cache = $args{cache} // 1;
     my $raw = $args{raw};
     my $exclude_re = $args{exclude_re};
     if ($exclude_re) {
@@ -72,7 +72,7 @@ sub list_rev_deps {
     }
 
     # '$cache' is ambiguous between args{cache} and CHI object
-    my $chi = CHI->new(driver => "File");
+    my $chi = CHI->new(driver => $do_cache ? "File" : "Null");
 
     my $mcpan = MetaCPAN::API->new;
 
