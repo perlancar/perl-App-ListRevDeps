@@ -1,5 +1,14 @@
 Revision history for App-ListRevDeps
 
+0.05    2014-03-07 (SHARYANTO)
+
+        - Add option --nocache.
+
+        - Update to changed CSS of MetaCPAN webpage.
+
+        - Log raw API output at trace level.
+
+
 0.04    2013-09-13 (SHARYANTO)
 
         - (Temporarily?) remove --recursive.
