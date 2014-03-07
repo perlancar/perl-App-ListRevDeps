@@ -97,7 +97,8 @@ sub list_rev_deps {
             return ();
         }
 
-        # list dists which depends on $dist
+        # list dists which depends on $dist. XXX we should switch to using the
+        # API function instead, see CPAN::ReverseDependencies.
         my $depdists = $chi->compute(
             "$cp-dist-$dist", $ce, sub {
                 $log->infof("Querying MetaCPAN for dist %s ...", $dist);
