@@ -60,11 +60,11 @@ sub list_rev_deps {
     state $ua = do { my $ua = LWP::UserAgent->new; $ua->env_proxy; $ua };
 
     my %args = @_;
-    # XXX schema
-    my $mod = $args{module} or return [400, "Please specify module"];
-    my $maxlevel = $args{level} // 1;
+
+    my $mod = $args{module};
+    my $maxlevel = $args{level};
     #$maxlevel = -1 if $args{recursive};
-    my $do_cache = $args{cache} // 1;
+    my $do_cache = $args{cache};
     my $raw = $args{raw};
     my $exclude_re = $args{exclude_re};
     if ($exclude_re) {
