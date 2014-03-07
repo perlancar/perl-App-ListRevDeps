@@ -103,7 +103,7 @@ sub list_rev_deps {
                 $log->infof("Querying MetaCPAN for dist %s ...", $dist);
                 my $url = "https://metacpan.org/requires/distribution/$dist";
                 my $res = $ua->get($url);
-                $log->tracef("API result: %s", $res);
+                if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
                 die "Can't get $url: " . $res->status_line unless $res->is_success;
                 my $dom = Mojo::DOM->new($res->content);
                 my @urls = $dom->find(".table-releases td.name a[href]")->pluck(attr=>"href")->each;
@@ -153,7 +153,7 @@ sub list_rev_deps {
                 "$cp-mod-$_", $ce, sub {
                     $log->infof("Querying MetaCPAN for module %s ...", $_);
                     my $res = $mcpan->module($_);
-                    $log->tracef("API result: %s", $res);
+                    if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
                     $res;
                 });
             $dist = $modinfo->{distribution};
@@ -178,6 +178,17 @@ sub list_rev_deps {
 
 Currently uses MetaCPAN API and also scrapes the MetaCPAN website and by default
 caches results for 24 hours.
+
+
+=head1 ENVIRONMENT
+
+=over
+
+=item * LOG_API_RESPONSE (bool)
+
+If enabled, will log raw API response (at trace level).
+
+=back
 
 
 =head1 SEE ALSO
