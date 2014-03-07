@@ -1,5 +1,10 @@
 Revision history for App-ListRevDeps
 
+0.06    2014-03-07 (SHARYANTO)
+
+        - Log API response only under LOG_API_RESPONSE.
+
+
 0.05    2014-03-07 (SHARYANTO)
 
         - Add option --nocache.
