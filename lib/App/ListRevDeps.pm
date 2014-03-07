@@ -103,6 +103,7 @@ sub list_rev_deps {
                 $log->infof("Querying MetaCPAN for dist %s ...", $dist);
                 my $url = "https://metacpan.org/requires/distribution/$dist";
                 my $res = $ua->get($url);
+                $log->tracef("API result: %s", $res);
                 die "Can't get $url: " . $res->status_line unless $res->is_success;
                 my $dom = Mojo::DOM->new($res->content);
                 my @urls = $dom->find(".release-table td.name a[href]")->pluck(attr=>"href")->each;
@@ -151,7 +152,9 @@ sub list_rev_deps {
             my $modinfo = $chi->compute(
                 "$cp-mod-$_", $ce, sub {
                     $log->infof("Querying MetaCPAN for module %s ...", $_);
-                    $mcpan->module($_);
+                    my $res = $mcpan->module($_);
+                    $log->tracef("API result: %s", $res);
+                    $res;
                 });
             $dist = $modinfo->{distribution};
         }
