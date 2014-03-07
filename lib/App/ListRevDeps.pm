@@ -106,7 +106,7 @@ sub list_rev_deps {
                 $log->tracef("API result: %s", $res);
                 die "Can't get $url: " . $res->status_line unless $res->is_success;
                 my $dom = Mojo::DOM->new($res->content);
-                my @urls = $dom->find(".release-table td.name a[href]")->pluck(attr=>"href")->each;
+                my @urls = $dom->find(".table-releases td.name a[href]")->pluck(attr=>"href")->each;
                 my @dists;
                 for (@urls) {
                     s!^/release/!!;
