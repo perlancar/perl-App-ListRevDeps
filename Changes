@@ -1,5 +1,11 @@
 Revision history for App-ListRevDeps
 
+0.07    2014-03-07 (SHARYANTO)
+
+        - No functional changes. Rebuild with DZP::Rinci::Wrap for testing
+          embedding wrapper code.
+
+
 0.06    2014-03-07 (SHARYANTO)
 
         - Log API response only under LOG_API_RESPONSE.
