@@ -1,5 +1,12 @@
 Revision history for App-ListRevDeps
 
+0.08    2014-05-27 (SHARYANTO)
+
+        - No functional changes.
+
+        - Replace the deprecated MetaCPAN::API with MetaCPAN::Client.
+
+
 0.07    2014-03-07 (SHARYANTO)
 
         - No functional changes. Rebuild with DZP::Rinci::Wrap for testing
