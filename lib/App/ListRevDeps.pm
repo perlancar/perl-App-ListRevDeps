@@ -52,12 +52,8 @@ $SPEC{list_rev_deps} = {
 };
 sub list_rev_deps {
     require CHI;
-    require LWP::UserAgent;
-    require MetaCPAN::API;
-    require Mojo::DOM;
+    require MetaCPAN::Client;
     require Module::CoreList;
-
-    state $ua = do { my $ua = LWP::UserAgent->new; $ua->env_proxy; $ua };
 
     my %args = @_;
 
@@ -74,7 +70,7 @@ sub list_rev_deps {
     # '$cache' is ambiguous between args{cache} and CHI object
     my $chi = CHI->new(driver => $do_cache ? "File" : "Null");
 
-    my $mcpan = MetaCPAN::API->new;
+    my $mcpan = MetaCPAN::Client->new;
 
     my $cp = "list_rev_deps"; # cache prefix
     my $ce = "24h"; # cache expire period
@@ -102,30 +98,22 @@ sub list_rev_deps {
         my $depdists = $chi->compute(
             "$cp-dist-$dist", $ce, sub {
                 $log->infof("Querying MetaCPAN for dist %s ...", $dist);
-                my $url = "https://metacpan.org/requires/distribution/$dist";
-                my $res = $ua->get($url);
+                my $res = $mcpan->rev_deps($dist);
                 if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
-                die "Can't get $url: " . $res->status_line unless $res->is_success;
-                my $dom = Mojo::DOM->new($res->content);
-                my @urls = $dom->find(".table-releases td.name a[href]")->pluck(attr=>"href")->each;
-                my @dists;
-                for (@urls) {
-                    s!^/release/!!;
-                    push @dists, $_;
-                }
-                \@dists;
+                $res;
             });
 
         for my $d (sort @$depdists) {
-            if ($exclude_re && $d =~ $exclude_re) {
-                $log->infof("Excluded dist %s", $d) unless $excluded{$d}++;
+            if ($exclude_re && $d->name =~ $exclude_re) {
+                $log->infof("Excluded dist %s", $d->name)
+                    unless $excluded{$d->name}++;
                 next;
             }
             my $res = {
-                dist => $d,
+                dist => $d->name,
             };
             if ($level < $maxlevel-1 || $maxlevel == -1) {
-                $res->{rev_deps} = [$do_list->($d, $level+1)];
+                $res->{rev_deps} = [$do_list->($d->name, $level+1)];
             }
             if ($raw) {
                 push @res, $res;
@@ -157,7 +145,7 @@ sub list_rev_deps {
                     if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
                     $res;
                 });
-            $dist = $modinfo->{distribution};
+            $dist = $modinfo->distribution;
         }
         push @res, $do_list->($dist);
     }
