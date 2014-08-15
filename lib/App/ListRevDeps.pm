@@ -58,7 +58,7 @@ sub list_rev_deps {
     my %args = @_;
 
     my $mod = $args{module};
-    my $maxlevel = $args{level};
+    my $maxlevel = $args{level} // 9999;
     #$maxlevel = -1 if $args{recursive};
     my $do_cache = $args{cache};
     my $raw = $args{raw};
