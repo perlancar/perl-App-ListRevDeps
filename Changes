@@ -1,5 +1,12 @@
 Revision history for App-ListRevDeps
 
+0.09     2014-08-16 (SHARYANTO) - Happy 19th CPAN Day!
+
+         - [build] CLI scripts are now generated automatically using
+           Dist::Zilla::Plugin::ScriptFromFunc. The plugin is still at 0.01 so the
+           generated script is not as polished as it should be. Stay tuned.
+
+
 0.08    2014-05-27 (SHARYANTO)
 
         - No functional changes.
