@@ -1,5 +1,10 @@
 Revision history for App-ListRevDeps
 
+0.11     2014-09-04 (PERLANCAR)
+
+         - A couple of bug fixes.
+
+
 0.10     2014-09-04 (PERLANCAR)
 
          - Adjust to new version of MetaCPAN::Client.
