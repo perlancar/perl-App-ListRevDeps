@@ -95,7 +95,7 @@ sub list_rev_deps {
         # list dists which depends on $dist. XXX we should switch to using the
         # API function instead, see CPAN::ReverseDependencies.
         my $depdists = $chi->compute(
-            "metacpan-dist-$dist", $ce, sub {
+            "metacpan-dist_rev_deps-$dist", $ce, sub {
                 $log->infof("Querying MetaCPAN for dist %s ...", $dist);
                 my $res = $mcpan->rev_deps($dist);
                 if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
