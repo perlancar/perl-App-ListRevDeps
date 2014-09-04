@@ -102,15 +102,16 @@ sub list_rev_deps {
                 $res;
             });
 
-        use DD; dd $depdists;
-        for my $d (sort @$depdists) {
-            if ($exclude_re && $d->name =~ $exclude_re) {
-                $log->infof("Excluded dist %s", $d->name)
-                    unless $excluded{$d->name}++;
+        #use DD; dd $depdists;
+        for my $d (@{ $depdists->{items} }) {
+            my $d_name = $d->{_source}{distribution};
+            if ($exclude_re && $d_name =~ $exclude_re) {
+                $log->infof("Excluded dist %s", $d_name)
+                    unless $excluded{$d_name}++;
                 next;
             }
             my $res = {
-                dist => $d->name,
+                dist => $d_name,
             };
             if ($level < $maxlevel-1 || $maxlevel == -1) {
                 $res->{rev_deps} = [$do_list->($d->name, $level+1)];
