@@ -72,7 +72,6 @@ sub list_rev_deps {
 
     my $mcpan = MetaCPAN::Client->new;
 
-    my $cp = "list_rev_deps"; # cache prefix
     my $ce = "24h"; # cache expire period
 
     my @errs;
@@ -96,13 +95,14 @@ sub list_rev_deps {
         # list dists which depends on $dist. XXX we should switch to using the
         # API function instead, see CPAN::ReverseDependencies.
         my $depdists = $chi->compute(
-            "$cp-dist-$dist", $ce, sub {
+            "metacpan-dist-$dist", $ce, sub {
                 $log->infof("Querying MetaCPAN for dist %s ...", $dist);
                 my $res = $mcpan->rev_deps($dist);
                 if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
                 $res;
             });
 
+        use DD; dd $depdists;
         for my $d (sort @$depdists) {
             if ($exclude_re && $d->name =~ $exclude_re) {
                 $log->infof("Excluded dist %s", $d->name)
@@ -139,7 +139,7 @@ sub list_rev_deps {
             $dist = $_;
         } else {
             my $modinfo = $chi->compute(
-                "$cp-mod-$_", $ce, sub {
+                "metacpan-mod-$_", $ce, sub {
                     $log->infof("Querying MetaCPAN for module %s ...", $_);
                     my $res = $mcpan->module($_);
                     if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
