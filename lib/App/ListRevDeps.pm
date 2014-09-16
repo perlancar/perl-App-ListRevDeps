@@ -114,7 +114,7 @@ sub list_rev_deps {
                 dist => $d_name,
             };
             if ($level < $maxlevel-1 || $maxlevel == -1) {
-                $res->{rev_deps} = [$do_list->($d->name, $level+1)];
+                $res->{rev_deps} = [$do_list->($d_name, $level+1)];
             }
             if ($raw) {
                 push @res, $res;
