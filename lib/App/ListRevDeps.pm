@@ -1,5 +1,8 @@
 package App::ListRevDeps;
 
+# DATE
+# VERSION
+
 use 5.010001;
 use strict;
 use warnings;
@@ -9,8 +12,6 @@ our %SPEC;
 require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(list_prereqs);
-
-# VERSION
 
 $SPEC{list_rev_deps} = {
     v => 1.1,
@@ -157,7 +158,7 @@ sub list_rev_deps {
 }
 
 1;
-#ABSTRACT: List reverse dependencies of a Perl module
+#ABSTRACT:
 
 =head1 SYNOPSIS
 
