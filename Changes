@@ -1,5 +1,12 @@
 Revision history for App-ListRevDeps
 
+0.13    2015-08-17 (PERLANCAR)
+
+	- Mention App::lcpan instead of the old CPAN::SQLite::CPANMeta.
+
+	- Switch from Log::Any to Log::Any::IfLOG.
+
+
 0.12     2014-09-16 (PERLANCAR)
 
          - Fix typo.
