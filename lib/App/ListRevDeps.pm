@@ -184,8 +184,8 @@ If enabled, will log raw API response (at trace level).
 
 =head1 SEE ALSO
 
-L<CPAN::SQLite::CPANMeta> indexes CPAN Meta information from releases in your
-local CPAN mirror, and allows you to query dependencies and reverse dependencies
+L<App::lcpan> indexes CPAN Meta information from releases in your local CPAN
+mirror, and allows you to query dependencies and reverse dependencies
 information from the index.
 
 =cut
