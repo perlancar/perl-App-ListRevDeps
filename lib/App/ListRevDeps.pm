@@ -6,7 +6,7 @@ package App::ListRevDeps;
 use 5.010001;
 use strict;
 use warnings;
-use Log::Any::IfLOG qw($log);
+use Log::ger;
 
 our %SPEC;
 require Exporter;
@@ -84,7 +84,7 @@ sub list_rev_deps {
     $do_list = sub {
         my ($dist, $level) = @_;
         $level //= 0;
-        $log->debugf("Listing reverse dependencies for dist %s (level=%d) ...", $mod, $level);
+        log_debug("Listing reverse dependencies for dist %s (level=%d) ...", $mod, $level);
 
         my @res;
 
@@ -97,9 +97,9 @@ sub list_rev_deps {
         # API function instead, see CPAN::ReverseDependencies.
         my $depdists = $chi->compute(
             "metacpan-dist_rev_deps-$dist", $ce, sub {
-                $log->infof("Querying MetaCPAN for dist %s ...", $dist);
+                log_info("Querying MetaCPAN for dist %s ...", $dist);
                 my $res = $mcpan->rev_deps($dist);
-                if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
+                if ($ENV{LOG_API_RESPONSE}) { log_trace("API result: %s", $res) }
                 $res;
             });
 
@@ -107,7 +107,7 @@ sub list_rev_deps {
         for my $d (@{ $depdists->{items} }) {
             my $d_name = $d->{_source}{distribution};
             if ($exclude_re && $d_name =~ $exclude_re) {
-                $log->infof("Excluded dist %s", $d_name)
+                log_info("Excluded dist %s", $d_name)
                     unless $excluded{$d_name}++;
                 next;
             }
@@ -142,9 +142,9 @@ sub list_rev_deps {
         } else {
             my $modinfo = $chi->compute(
                 "metacpan-mod-$_", $ce, sub {
-                    $log->infof("Querying MetaCPAN for module %s ...", $_);
+                    log_info("Querying MetaCPAN for module %s ...", $_);
                     my $res = $mcpan->module($_);
-                    if ($ENV{LOG_API_RESPONSE}) { $log->tracef("API result: %s", $res) }
+                    if ($ENV{LOG_API_RESPONSE}) { log_trace("API result: %s", $res) }
                     $res;
                 });
             $dist = $modinfo->distribution;
